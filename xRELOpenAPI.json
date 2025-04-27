@@ -41,7 +41,23 @@
     {
       "name": "search",
       "description": "Paths related to the xREL Search"
-    }
+    },
+    {
+      "name": "favs",
+      "description": "Paths related to Favorites Lists"
+    },
+    {
+      "name": "comments",
+      "description": "Paths related to Comments"
+    },
+    {
+      "name": "user",
+      "description": "Paths related to Userinfo"
+    },
+    {
+      "name": "oauth",
+      "description": "Paths related to OAuth 2.0 authentication"
+    } 
   ],
   "paths": {
     "/release/info.json": {
@@ -774,6 +790,341 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/results_ext_info"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favs/lists.json": {
+      "get": {
+        "tags": ["favs"],
+        "description": "Returns all favorite lists of the user.",
+        "operationId": "getFavsListsJSON",
+        "security": [{ "xRELoAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favs/list_entries.json": {
+      "get": {
+        "tags": ["favs"],
+        "description": "Returns all Ext Info entries of a favorite list.",
+        "operationId": "getFavsListEntriesJSON",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The favorite list ID.",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "xRELoAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favs/list_addentry.json": {
+      "post": {
+        "tags": ["favs"],
+        "description": "Adds an Ext Info to a favorite list.",
+        "operationId": "postFavsListAddEntryJSON",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The favorite list ID.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "ext_info_id",
+            "in": "query",
+            "description": "The Ext Info ID.",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "xRELoAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favs/list_delentry.json": {
+      "post": {
+        "tags": ["favs"],
+        "description": "Removes an Ext Info from a favorite list.",
+        "operationId": "postFavsListDelEntryJSON",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The favorite list ID.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "ext_info_id",
+            "in": "query",
+            "description": "The Ext Info ID to remove.",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "xRELoAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favs/list_markread.json": {
+      "post": {
+        "tags": ["favs"],
+        "description": "Marks all releases of a favorite list as read.",
+        "operationId": "postFavsListMarkReadJSON",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The favorite list ID.",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "xRELoAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/get.json": {
+      "get": {
+        "tags": ["comments"],
+        "description": "Returns comments for a given release or Ext Info.",
+        "operationId": "getCommentsJSON",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Release or Ext Info ID to fetch comments for.",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/add.json": {
+      "post": {
+        "tags": ["comments"],
+        "description": "Adds a comment to a release or Ext Info.",
+        "operationId": "postCommentsAddJSON",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Release or Ext Info ID to comment on.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "description": "The comment text (max 500 chars).",
+            "required": true,
+            "schema": { "type": "string", "maxLength": 500 }
+          }
+        ],
+        "security": [{ "xRELoAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/info.json": {
+      "get": {
+        "tags": ["user"],
+        "description": "Returns information about the authenticated user.",
+        "operationId": "getUserInfoJSON",
+        "security": [{ "xRELoAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/auth": {
+      "get": {
+        "tags": ["oauth"],
+        "description": "OAuth 2.0 Authorization Endpoint. Use this to authorize user access.",
+        "operationId": "getOAuth2Authorize",
+        "parameters": [
+          {
+            "name": "response_type",
+            "in": "query",
+            "description": "Set to 'token'.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["token"]
+            }
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "description": "The client ID you received from xREL.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "description": "URL to redirect the user after authorization.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "description": "Requested permissions (optional).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "Opaque value used to maintain state between the request and callback (optional).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirects to the provided redirect_uri with the access token in URL fragment."
+          }
+        }
+      }
+    },
+    "/oauth2/token": {
+      "post": {
+        "tags": ["oauth"],
+        "description": "OAuth 2.0 Token Endpoint. Exchange credentials for an access token.",
+        "operationId": "postOAuth2Token",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "enum": ["authorization_code", "refresh_token"]
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The authorization code received from the authorization server."
+                  },
+                  "redirect_uri": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "client_id": {
+                    "type": "string"
+                  },
+                  "client_secret": {
+                    "type": "string"
+                  },
+                  "refresh_token": {
+                    "type": "string"
+                  }
+                },
+                "required": ["grant_type", "client_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Access token returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string" },
+                    "token_type": { "type": "string" },
+                    "expires_in": { "type": "integer" },
+                    "refresh_token": { "type": "string" }
+                  }
                 }
               }
             }
